@@ -1,0 +1,108 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block title %}Update Profile{% endblock %}
+
+{% block content %}
+<style>
+    .update-profile-container {
+        text-align: center;
+        margin-top: 2rem;
+        min-height: 70vh; /* Ensures the page covers more than half */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .update-profile-form {
+        width: 50%;
+        max-width: 600px;
+        padding: 2rem;
+        background-color: var(--testimonial-bg);
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        text-align: left;
+    }
+
+    label {
+        font-weight: bold;
+        display: block;
+        margin-top: 1rem;
+    }
+
+    textarea {
+        width: 100%;
+        min-height: 100px;
+        padding: 0.5rem;
+        border-radius: 6px;
+        border: 1px solid var(--cyan);
+        resize: none;
+    }
+
+    .profile-image-preview {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 1rem;
+    }
+
+    .profile-image-preview img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--cyan);
+        margin-bottom: 1rem;
+    }
+
+    .update-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    button {
+        padding: 0.75rem 1.5rem;
+        background: var(--linear-btn);
+        color: var(--heading-clr);
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    button:hover {
+        background: var(--cyan);
+    }
+</style>
+
+<div class="update-profile-container">
+    <h2>Update Profile</h2>
+
+    <form method="POST" enctype="multipart/form-data" class="update-profile-form">
+        {% csrf_token %}
+
+        <label for="bio">Bio:</label>
+        <textarea id="bio" name="bio">{{ profile.bio }}</textarea>
+
+        <div class="profile-image-preview">
+            {% if profile.profile_image %}
+                <img src="{{ profile.profile_image.url }}" alt="Current Profile Image">
+                <label>
+                    <input type="checkbox" name="remove_image"> Remove current profile image
+                </label>
+            {% endif %}
+        </div>
+
+        <label for="profile_image">Upload New Profile Image:</label>
+        <input type="file" id="profile_image" name="profile_image">
+
+        <div class="update-buttons">
+            <button type="submit">Save Changes</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,279 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="sell-workspace-container">
+        <div class="header">
+            <h2>Sell Workspace</h2>
+            <p class="subtitle">{{ workspace.name }}</p>
+        </div>
+        
+        <form method="post" class="sell-form">
+            {% csrf_token %}
+            
+            <div class="form-group toggle-group">
+                <div class="form-check">
+                    {{ form.is_for_sale }}
+                    <label class="form-check-label" for="{{ form.is_for_sale.id_for_label }}">
+                        <span class="toggle-switch"></span>
+                        <span class="toggle-text">Put this workspace up for sale</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-group price-group" id="priceField">
+                <label for="{{ form.sale_price.id_for_label }}">Set your price</label>
+                <div class="input-group">
+                    <span class="input-group-text">₹</span>
+                    {{ form.sale_price }}
+                </div>
+                <small class="form-text">Minimum ₹100 - You'll receive payment via Razorpay</small>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    {% if workspace.is_for_sale %}Update Listing{% else %}List for Sale{% endif %}
+                </button>
+                <a href="{% url 'workspace:workspace_detail' workspace.id %}" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+        
+        {% if workspace.is_for_sale %}
+        <div class="current-listing">
+            <h4>Current Listing</h4>
+            <div class="listing-details">
+                <div class="detail-item">
+                    <span class="label">Status:</span>
+                    <span class="value active">Active</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Price:</span>
+                    <span class="value">₹{{ workspace.sale_price }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Created:</span>
+                    <span class="value">{{ workspace.created_at|date:"M d, Y" }}</span>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+    
+    .sell-workspace-container {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        padding: 2rem;
+    }
+    
+    .header {
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+    
+    .header h2 {
+        color: #2c3e50;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+    }
+    
+    .subtitle {
+        color: #7f8c8d;
+        font-size: 1.1rem;
+    }
+    
+    .sell-form {
+        margin-bottom: 2rem;
+    }
+    
+    .toggle-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-check {
+        display: flex;
+        align-items: center;
+    }
+    
+    .form-check-input {
+        width: 0;
+        height: 0;
+        opacity: 0;
+        position: absolute;
+    }
+    
+    .form-check-label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        user-select: none;
+    }
+    
+    .toggle-switch {
+        width: 50px;
+        height: 26px;
+        background: #e0e0e0;
+        border-radius: 13px;
+        position: relative;
+        margin-right: 12px;
+        transition: background 0.2s ease;
+    }
+    
+    .toggle-switch:after {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: white;
+        border-radius: 50%;
+        top: 3px;
+        left: 3px;
+        transition: transform 0.2s ease;
+    }
+    
+    .form-check-input:checked + .form-check-label .toggle-switch {
+        background: #4CAF50;
+    }
+    
+    .form-check-input:checked + .form-check-label .toggle-switch:after {
+        transform: translateX(24px);
+    }
+    
+    .toggle-text {
+        font-weight: 500;
+        color: #34495e;
+    }
+    
+    .price-group {
+        margin-bottom: 1.5rem;
+        display: none;
+    }
+    
+    .price-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: #34495e;
+    }
+    
+    .input-group {
+        max-width: 200px;
+    }
+    
+    .input-group-text {
+        background: #f8f9fa;
+        font-weight: 500;
+    }
+    
+    #id_sale_price {
+        text-align: right;
+        font-weight: 500;
+    }
+    
+    .form-text {
+        color: #7f8c8d;
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+        display: block;
+    }
+    
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+    
+    .btn-primary {
+        background: #3498db;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+    }
+    
+    .btn-outline-secondary {
+        padding: 0.75rem 1.5rem;
+    }
+    
+    .current-listing {
+        border-top: 1px solid #eee;
+        padding-top: 1.5rem;
+        margin-top: 2rem;
+    }
+    
+    .current-listing h4 {
+        color: #2c3e50;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+    
+    .listing-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+    
+    .detail-item {
+        background: #f8f9fa;
+        padding: 0.75rem;
+        border-radius: 8px;
+    }
+    
+    .label {
+        display: block;
+        font-size: 0.85rem;
+        color: #7f8c8d;
+        margin-bottom: 0.25rem;
+    }
+    
+    .value {
+        font-weight: 500;
+        color: #2c3e50;
+    }
+    
+    .value.active {
+        color: #4CAF50;
+    }
+</style>
+
+<script>
+    // Enhanced toggle functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const saleCheckbox = document.getElementById('{{ form.is_for_sale.id_for_label }}');
+        const priceField = document.getElementById('priceField');
+        
+        // Initialize visibility
+        priceField.style.display = saleCheckbox.checked ? 'block' : 'none';
+        
+        // Toggle visibility
+        saleCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                priceField.style.display = 'block';
+                priceField.querySelector('input').focus();
+            } else {
+                priceField.style.display = 'none';
+            }
+        });
+        
+        // Validate price input
+        const priceInput = document.getElementById('id_sale_price');
+        if (priceInput) {
+            priceInput.addEventListener('input', function() {
+                if (this.value < 100) {
+                    this.setCustomValidity('Minimum price is ₹100');
+                } else {
+                    this.setCustomValidity('');
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

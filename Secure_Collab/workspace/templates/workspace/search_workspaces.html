@@ -1,0 +1,150 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="search-workspaces-container">
+    <h1><i class="fas fa-search"></i> Search Public Workspaces</h1>
+
+    <!-- Search Form -->
+    <form method="get" action="{% url 'workspace:search_workspaces' %}" class="search-form">
+        <div class="form-group">
+            <input type="text" name="q" placeholder="Search by name or description" value="{{ query }}" class="search-input">
+            <button type="submit" class="btn primary">
+                <i class="fas fa-search"></i> Search
+            </button>
+        </div>
+    </form>
+
+    <!-- Public Workspaces List -->
+    <h2><i class="fas fa-folder-open"></i> Public Workspaces</h2>
+    {% if public_workspaces %}
+        <div class="workspaces-list">
+            {% for workspace in public_workspaces %}
+                <div class="workspace-card">
+                    <h3>{{ workspace.name }}</h3>
+                    <p>{{ workspace.description }}</p>
+                    <p class="created-at">Created: {{ workspace.created_at|date:"Y-m-d H:i" }}</p>
+                    <a href="{% url 'workspace:join_workspace_public' workspace.id %}" class="btn primary">
+                        <i class="fas fa-plus"></i> Join Workspace
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty-message">No public workspaces found.</p>
+    {% endif %}
+</div>
+
+<!-- Styles -->
+<style>
+    :root {
+        --heading-clr: #2c3e50;
+        --text-clr: #444;
+        --blue: #007bff;
+        --cyan: #17a2b8;
+        --testimonial-bg: #f8f9fa;
+    }
+
+    .search-workspaces-container {
+        width: 90%;
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    h1, h2 {
+        color: var(--heading-clr);
+    }
+
+    h1 {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .search-form {
+        margin-bottom: 2rem;
+    }
+
+    .form-group {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .search-input {
+        flex: 1;
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: background 0.3s ease;
+    }
+
+    .btn.primary {
+        background: var(--blue);
+        color: white;
+    }
+
+    .btn.primary:hover {
+        background: var(--cyan);
+    }
+
+    .workspaces-list {
+        display: grid;
+        gap: 1.5rem;
+    }
+
+    .workspace-card {
+        background: var(--testimonial-bg);
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .workspace-card h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .workspace-card p {
+        color: var(--text-clr);
+        margin-bottom: 0.5rem;
+    }
+
+    .created-at {
+        font-size: 0.9rem;
+        color: #777;
+    }
+
+    .empty-message {
+        color: var(--text-clr);
+        text-align: center;
+        margin: 2rem 0;
+    }
+</style>
+
+<!-- FontAwesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+{% endblock %}

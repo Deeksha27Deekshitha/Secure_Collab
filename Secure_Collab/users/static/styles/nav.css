@@ -1,0 +1,31 @@
+/* ========== Default Reset and Styles ========== */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Open Sans", sans-serif;
+}
+
+/* ========== Navigation Section ========== */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3rem 1rem;  /* Reduced padding */
+     /* background-color: #9cea1f;  */
+    height: 50px;  /* Reduced height */
+}
+
+/* Logo Styling */
+nav .logo img {
+    width: auto;  /* Adjust logo size */
+    height: auto;
+}
+
+/* Profile Image Styling */
+.profile-img {
+    width: 40px;  /* Smaller size */
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+}

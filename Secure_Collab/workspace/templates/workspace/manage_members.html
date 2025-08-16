@@ -1,0 +1,55 @@
+<h1>{{ workspace.name }} - Members</h1>
+
+{% if is_creator_or_editor %}
+    <h3>Manage Roles</h3>
+    <form method="POST">
+        {% csrf_token %}
+        <select name="user_id" required>
+            {% for member in members %}
+                <option value="{{ member.id }}">{{ member.user.username }} - Current Role: {{ member.get_role_display }}</option>
+            {% endfor %}
+        </select>
+        <select name="new_role" required>
+            <option value="creator">Creator</option>
+            <option value="editor">Editor</option>
+            <option value="viewer">Viewer</option>
+        </select>
+        <button type="submit" name="action" value="change_role">Change Role</button>
+    </form>
+
+    <h3>Remove a User</h3>
+    <form method="POST">
+        {% csrf_token %}
+        <select name="remove_user" required>
+            {% for member in members %}
+                <option value="{{ member.id }}">{{ member.user.username }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" name="action" value="remove_user">Remove User</button>
+    </form>
+
+{% else %}
+    <p>You are not authorized to manage roles in this workspace.</p>
+{% endif %}
+
+<h2>Workspace Members</h2>
+<table>
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for member in members %}
+            <tr>
+                <td>{{ member.user.username }}</td>
+                <td>{{ member.get_role_display }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="2">No members in this workspace yet.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

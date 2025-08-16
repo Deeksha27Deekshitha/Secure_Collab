@@ -1,0 +1,169 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="workspace-container">
+ 
+
+    <h1>Invite a Member to <span class="workspace-name">{{ workspace.name }}</span></h1>
+
+    <!-- Error Alert -->
+    {% if error %}
+        <div class="alert error-alert">
+            <i class="fas fa-exclamation-circle"></i> {{ error }}
+        </div>
+    {% endif %}
+
+    <!-- Invitation Form -->
+    <form method="post" class="invite-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
+            <input type="email" name="email" id="email" class="form-control" placeholder="e.g. user@example.com" required>
+        </div>
+        <button type="submit" class="btn primary">
+            <i class="fas fa-paper-plane"></i> Send Invitation
+        </button>
+    </form>
+
+    <!-- Actions -->
+    <div class="add-actions">
+        <a href="{% url "workspace:workspace_list" %}" class="btn info"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+    </div>
+</div>
+
+<!-- Styles -->
+<style>
+    :root {
+        --heading-clr: #2c3e50;
+        --text-clr: #444;
+        --blue: #007bff;
+        --cyan: #17a2b8;
+        --testimonial-bg: #f8f9fa;
+        --error: #dc3545;
+    }
+
+    .workspace-container {
+        width: 90%;
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+        color: var(--heading-clr);
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .workspace-name {
+        color: var(--cyan);
+        font-weight: bold;
+    }
+
+    .breadcrumb {
+        margin-bottom: 1.5rem;
+        font-size: 0.9rem;
+        color: var(--text-clr);
+    }
+
+    .breadcrumb-link {
+        color: var(--cyan);
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .breadcrumb-link:hover {
+        color: var(--blue);
+    }
+
+    .error-alert {
+        background: var(--error);
+        color: white;
+        padding: 0.75rem;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .invite-form {
+        margin-top: 1.5rem;
+    }
+
+    .form-group {
+        text-align: left;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--text-clr);
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: var(--blue);
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: background 0.3s ease;
+    }
+
+    .btn.primary {
+        background: var(--blue);
+        color: white;
+    }
+
+    .btn.primary:hover {
+        background: var(--cyan);
+    }
+
+    .btn.info {
+        background: var(--cyan);
+        color: white;
+    }
+
+    .btn.info:hover {
+        background: var(--blue);
+    }
+
+    .add-actions {
+        margin-top: 2rem;
+        text-align: center;
+    }
+</style>
+
+<!-- FontAwesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+{% endblock %}

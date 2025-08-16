@@ -1,0 +1,97 @@
+{% extends 'users/base.html' %}
+{% block content %}
+<div class="file-view-container">
+    <div class="file-header">
+        <h1><i class="fas fa-file-alt"></i> {{ file_obj.name }}</h1>
+        <a href="{% url 'workspace:workspace_detail' workspace_id=file_obj.workspace.id %}" class="btn danger">
+            <i class="fas fa-times"></i> Close
+        </a>
+    </div>
+
+    <div class="file-content">
+        <pre>{{ file_content }}</pre> <!-- Display File Content -->
+    </div>
+</div>
+
+<!-- Styles -->
+<style>
+    :root {
+        --primary-color: #007bff;
+        --danger-color: #dc3545;
+        --bg-light: #f8f9fa;
+        --text-dark: #333;
+        --code-bg: #282c34;
+        --code-text: #ffffff;
+        --border-radius: 10px;
+    }
+
+    .file-view-container {
+        width: 90%;
+        max-width: 800px;
+        margin: 3rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    .file-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    h1 {
+        color: var(--text-dark);
+        font-size: 1.8rem;
+        margin: 0;
+    }
+
+    .file-content {
+        background: var(--code-bg);
+        padding: 1.5rem;
+        border-radius: var(--border-radius);
+        overflow-x: auto;
+        max-height: 500px;
+    }
+
+    pre {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        font-family: 'Courier New', monospace;
+        color: var(--code-text);
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+
+    .btn {
+        padding: 0.6rem 1.2rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: bold;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: background 0.3s ease, transform 0.2s;
+    }
+
+    .btn.danger {
+        background: var(--danger-color);
+        color: white;
+    }
+
+    .btn.danger:hover {
+        background: #c82333;
+        transform: scale(1.05);
+    }
+</style>
+
+<!-- FontAwesome Icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+{% endblock %}

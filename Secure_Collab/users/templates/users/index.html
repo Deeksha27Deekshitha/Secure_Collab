@@ -1,0 +1,219 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="{% static 'images/favicon-32x32.png' %}"
+    />
+    <script
+      src="https://kit.fontawesome.com/1e2ec1e12b.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
+    <title>SECURE COLLAB | GET STARTED</title>
+  </head>
+
+  <body>
+    <nav>
+      <a href="#" aria-label="logo">
+        <img
+          src="{% static '\images\secure-collab3.png' %}?v=2 "
+          alt="logo"
+          class="logo"
+        />
+      </a>
+      <ul>
+        <li><a href="#features" aria-label="features">Features</a></li>
+        <li><a href="#team" aria-label="team">Reviews</a></li>
+        <li><a href="#sign-in" aria-label="sign-in">Sign In</a></li>
+      </ul>
+    </nav>
+
+    <header>
+      <img
+        src="{% static 'images/illustration-intro.png' %}"
+        alt="intro illustration"
+      />
+      <div>
+        <h1>All your files in one secure location, accessible anywhere.</h1>
+        <p>
+          Secure Collab stores all your most important files in one secure
+          location. Access them wherever you need, share and collaborate with
+          friends family, and co-workers.
+        </p>
+       <button onclick="smoothScroll()">Get Started</button>
+      </div>
+    </header>
+
+    <main>
+      <div class="features" id="features">
+        <section>
+          <img
+            src="{% static 'images/icon-access-anywhere.svg' %}"
+            alt="desktop-phone"
+          />
+          <h2>Access your files, anywhere</h2>
+          <p>
+            The ability to use a smartphone, tablet, or computer to access your
+            account means your files follow you everywhere.
+          </p>
+        </section>
+        <section>
+          <img src="{% static 'images/icon-security.svg' %}" alt="shield" />
+          <h2>Security you can trust</h2>
+          <p>
+            2-factor authentication and user-controlled encryption are just a
+            couple of the security features we allow to help secure your files.
+          </p>
+        </section>
+        <section>
+          <img
+            src="{% static 'images/icon-collaboration.svg' %}"
+            alt="collaboration image"
+          />
+          <h2>Real-time collaboration</h2>
+          <p>
+            Securely share files and folders with friends, family and colleagues
+            for live collaboration. No email attachments required.
+          </p>
+        </section>
+        <section>
+          <img
+            src="{% static 'images/icon-any-file.svg' %}"
+            alt="file folders"
+          />
+          <h2>Store any type of file</h2>
+          <p>
+            Whether you're sharing holidays photos or work documents, Secure
+            Bridge has you covered allowing for all file types to be securely
+            stored and shared.
+          </p>
+        </section>
+      </div>
+
+      <div class="how_it_works">
+        <img
+          src="{% static 'images/illustration-stay-productive.png' %}"
+          alt="stay productive illustration"
+        />
+        <section>
+          <h2>Stay productive, wherever you are</h2>
+          <p>
+            Never let location be an issue when accessing your files. Secure
+            Bridge has you covered for all of your file storage needs.
+          </p>
+          <p>
+            Securely share files and folders with friends, family and colleagues
+            for live collaboration. No email attachments required.
+          </p>
+          <a href="https://youtu.be/dQw4w9WgXcQ" aria-label="how_it_works"
+            ><span>See how Secure Collab works </span
+            ><img src="{% static 'images/icon-arrow.svg' %}" alt="arrow icon"
+          /></a>
+        </section>
+      </div>
+
+      <div class="review_section" id="team">
+        <div class="reviews first-review">
+          <p>
+            Secure Collab has improved our team productivity by an order of
+            magnitude. Since making the switch our team has become a well-oiled
+            collaboration machine.
+          </p>
+          <div class="profile">
+            <img
+              src="{% static 'images/profile-1.jpg' %}"
+              alt="portrait of Satish Patel"
+            />
+            <section class="name">
+              <h3>Satish Patel</h3>
+              <p>User</p>
+            </section>
+          </div>
+        </div>
+        <div class="reviews">
+          <p>
+            Secure Collab has improved our team productivity by an order of
+            magnitude. Since making the switch our team has become a well-oiled
+            collaboration machine.
+          </p>
+          <div class="profile">
+            <img
+              src="{% static 'images/profile-2.jpg' %}"
+              alt="portrait of Bruce McKenzie"
+            />
+            <section class="name">
+              <h3>Bruce McKenzie</h3>
+              <p>User</p>
+            </section>
+          </div>
+        </div>
+        <div class="reviews">
+          <p>
+            Secure Collab has improved our team productivity by an order of
+            magnitude. Since making the switch our team has become a well-oiled
+            collaboration machine.
+          </p>
+          <div class="profile">
+            <img
+              src="{% static 'images/profile-3.jpg' %}"
+              alt="portrait of Iva Boyd"
+            />
+            <section class="name">
+              <h3>Iva Boyd</h3>
+              <p>User</p>
+            </section>
+          </div>
+        </div>
+      </div>
+   
+
+  
+      <section class="early_access" id="sign-in">
+        <h2>Get early access today</h2>
+        <p>
+          It only takes a minute to sign up and our free starter tier is
+          extremely generous. If you have any questions, our support team would
+          be happy to help you.
+        </p>
+
+        <button
+          type="button"
+          onclick="window.location.href='{% url 'send_signup_link' %}'"
+        >
+          Signup
+        </button>
+        <button
+          type="button"
+          onclick="window.location.href='{% url 'login' %}'"
+        >
+          Login
+        </button>
+      </section>
+ </main>
+
+  <footer>
+      <div class="footer_container">
+           <p> securecollab.platform &copy; 2025  All rights reserved</p>
+           <p style="font-size: 13px;">
+              <i>(For Support -  securecollab.platform@gmail.com)</i>
+            </p>
+
+      </div>
+    </footer>
+  </body>
+
+  <script>
+  function smoothScroll() {
+    const target = document.getElementById('sign-in');
+    target.scrollIntoView({
+      behavior: 'smooth'
+    });
+  }
+</script>
+</html>

@@ -1,0 +1,139 @@
+{% extends 'users/base.html' %}
+{% block title %}Dashboard - Workspaces{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Create Workspace Section -->
+    <div class="section create-workspace">
+        <div class="text-content">
+            <h2>Create Your Own Workspace</h2>
+            <p>Start collaborating by creating a new workspace. Invite your team and manage projects efficiently.</p>
+            <a href="{% url 'workspace:create_workspace' %}" class="btn primary">Create Workspace</a>
+            <a href="{% url 'workspace:workspace_list' %}" class="btn secondary">View Workspaces</a>
+        </div>
+    </div>
+
+    <!-- New Sections Next to Each Other -->
+    <div class="section additional-sections">
+        <div class="section-box green-box">
+            <h2>Join a Green Workspace</h2>
+            <p>Become part of an active team focused on environmental projects. Join a green workspace today!</p>
+            <a href="{% url "workspace:search_workspaces" %}" class="btn primary">Join Now</a>
+        </div>
+
+        <div class="section-box complementary-box">
+            <h2>Explore New Projects</h2>
+            <p>Find exciting new projects that align with your skills and interests. Start collaborating now!</p>
+            <a href="#" class="btn secondary">Explore Projects</a>
+        </div>
+    </div>
+</div>
+
+<style>
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container */
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+/* Sections */
+.section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 250px;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Create Workspace Section */
+.create-workspace {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+}
+
+.create-workspace h2, .create-workspace p {
+    margin: 0;
+}
+
+.create-workspace .btn {
+    background: white;
+    color: #007bff;
+    font-weight: bold;
+}
+
+/* Additional Sections */
+.additional-sections {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+}
+
+.section-box {
+    flex: 1;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Green Box */
+.green-box {
+    background: #28a745;
+    color: white;
+    text-align: center;
+}
+
+.green-box .btn {
+    background: white;
+    color: #28a745;
+    font-weight: bold;
+}
+
+/* Complementary Box */
+.complementary-box {
+    background:rgb(242, 16, 16);
+    color: white;
+    text-align: center;
+}
+
+.complementary-box .btn {
+    background: #007bff;
+    color: white;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: 0.3s;
+    border: none;
+    cursor: pointer;
+}
+
+.btn.primary:hover {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.btn.secondary:hover {
+    background: #0056b3;
+}
+</style>
+
+{% endblock %}

@@ -1,0 +1,198 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="workspace-members-container">
+    <h1><i class="fas fa-users"></i> {{ workspace.name }} - Members</h1>
+
+    {% if is_creator_or_editor %}
+        <div class="manage-roles">
+            <h3><i class="fas fa-user-cog"></i> Manage Roles</h3>
+            <form method="POST" class="role-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <select name="user_id" required>
+                        {% for member in members %}
+                            <option value="{{ member.id }}">{{ member.user.username }} - Current Role: {{ member.get_role_display }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select name="new_role" required>
+                        <option value="creator">Creator</option>
+                        <option value="editor">Editor</option>
+                        <option value="viewer">Viewer</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn primary" name="action" value="change_role">
+                    <i class="fas fa-sync-alt"></i> Change Role
+                </button>
+            </form>
+        </div>
+
+        <div class="remove-user">
+            <h3><i class="fas fa-user-minus"></i> Remove a User</h3>
+            <form method="POST" class="remove-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <select name="remove_user_id" required>
+                        {% for member in members %}
+                            <option value="{{ member.id }}">{{ member.user.username }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn danger" name="action" value="remove_user">
+                    <i class="fas fa-trash"></i> Remove User
+                </button>
+            </form>
+        </div>
+    {% else %}
+        <p class="unauthorized-message">You are not authorized to manage roles in this workspace.</p>
+    {% endif %}
+
+    <h2><i class="fas fa-users"></i> Workspace Members</h2>
+    <table class="members-table">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in members %}
+                <tr>
+                    <td>{{ member.user.username }}</td>
+                    <td>{{ member.get_role_display }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="2">No members in this workspace yet.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Styles -->
+<style>
+    :root {
+        --heading-clr: #2c3e50;
+        --text-clr: #444;
+        --blue: #007bff;
+        --cyan: #17a2b8;
+        --danger: #dc3545;
+        --testimonial-bg: #f8f9fa;
+    }
+
+    .workspace-members-container {
+        width: 90%;
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    h1, h2, h3 {
+        color: var(--heading-clr);
+    }
+
+    h1 {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    h3 {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+
+    .manage-roles, .remove-user {
+        margin-bottom: 2rem;
+    }
+
+    .role-form, .remove-form {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-end;
+    }
+
+    .form-group {
+        flex: 1;
+    }
+
+    .form-group select {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: background 0.3s ease;
+    }
+
+    .btn.primary {
+        background: var(--blue);
+        color: white;
+    }
+
+    .btn.primary:hover {
+        background: var(--cyan);
+    }
+
+    .btn.danger {
+        background: var(--danger);
+        color: white;
+    }
+
+    .btn.danger:hover {
+        background: #c82333;
+    }
+
+    .members-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+
+    .members-table th, .members-table td {
+        padding: 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .members-table th {
+        background: var(--testimonial-bg);
+        color: var(--heading-clr);
+    }
+
+    .unauthorized-message {
+        color: var(--danger);
+        text-align: center;
+        margin: 2rem 0;
+    }
+</style>
+
+<!-- FontAwesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+{% endblock %}

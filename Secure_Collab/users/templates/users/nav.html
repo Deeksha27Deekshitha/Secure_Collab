@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation</title>
+    <style>
+        
+    </style>
+</head>
+<body>
+    <nav>
+        <!-- Large Logo -->
+        <a href="#" aria-label="logo" class="logo">
+            <img src="{% static '\images\secure-collab3.png' %}?v=2" alt="Logo">
+
+        </a>
+
+        <!-- Profile Image -->
+        {% if user.is_authenticated %}
+        <ul style="position: relative;
+        left: 14rem;">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'workspace:workspace_list' %}">Workspace List</a></li>
+        </ul>
+        <a href="{% url 'user_profile' username=user.username %}">
+            {% if user.profile.profile_image %}
+                <img src="{{ user.profile.profile_image.url }}" alt="Profile" class="profile-img">
+            {% else %}
+                <img src="{% static 'images/default_user.jpg' %}" alt="Default Profile" class="profile-img">
+            {% endif %}
+        </a>
+        {% else %}
+        <ul>
+            <li><a href="{% url 'get_started' %}">Get Started</a></li>
+            <li><a href="{% url 'send_signup_link' %}">Sign Up</a></li>
+        </ul>
+        {% endif %}
+    </nav>
+</body>
+</html>
