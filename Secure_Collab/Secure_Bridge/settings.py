@@ -82,14 +82,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "/static/"
-
-# This is the FIX ✅
-STATIC_ROOT = BASE_DIR / "staticfiles"
-
-# Additional static directories
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
+STATICFILES_DIRS = [BASE_DIR / "static"]  # development
+STATIC_ROOT = BASE_DIR / "staticfiles"    # production (collectstatic)
 
 # Media files (uploads)
 MEDIA_URL = "/media/"
@@ -97,8 +91,3 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "static"]
-STATIC_ROOT = BASE_DIR / "staticfiles"
-
