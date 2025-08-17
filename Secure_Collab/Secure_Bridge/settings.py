@@ -1,16 +1,17 @@
 import os
 from pathlib import Path
 
-# Build paths inside the project
+# Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-CHANGE_THIS_TO_YOUR_SECRET_KEY'
+SECRET_KEY = 'django-insecure-change-this-to-your-secret-key'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False   # set True only for local development
+# SECURITY WARNING: don’t run with debug turned on in production!
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']   # or ['yourusername.pythonanywhere.com']
+# On PythonAnywhere, replace '*' with your domain (e.g. 'Deeksha27Deekshitha.pythonanywhere.com')
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 INSTALLED_APPS = [
@@ -20,7 +21,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # your apps here
+    # Your apps here
+    # 'your_app_name',
 ]
 
 MIDDLEWARE = [
@@ -38,7 +40,7 @@ ROOT_URLCONF = 'Secure_Collab.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # global templates folder
+        'DIRS': [BASE_DIR / "templates"],  # Global templates directory
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -53,8 +55,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Secure_Collab.wsgi.application'
 
-# Database
-# Update this if using MySQL/PostgreSQL on PythonAnywhere
+# Database (default: SQLite)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -64,38 +65,30 @@ DATABASES = {
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
 ]
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'Asia/Kolkata'   # change if needed
+TIME_ZONE = 'Asia/Kolkata'   # changed for India timezone
 USE_I18N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 
-# Place app-level static files here: Secure_Collab/static/
+# Where collectstatic will put all static files
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Extra places Django will search for static files
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-# Collectstatic will dump all into this folder
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# Media files (uploads, if any)
+# Media files (uploads)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
