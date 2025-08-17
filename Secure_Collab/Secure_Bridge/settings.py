@@ -1,15 +1,18 @@
 import os
 from pathlib import Path
 
-# Build paths inside the project
+# Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "django-insecure-your-secret-key"  # replace with your real key
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = "django-insecure-your-secret-key"
+
+# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]  # change later to your domain/pythonanywhere domain
+ALLOWED_HOSTS = ["*"]
 
-# Installed apps
+# Application definition
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -40,7 +43,7 @@ ROOT_URLCONF = "Secure_Collab.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [BASE_DIR / "templates"],  # global templates folder
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -73,17 +76,24 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 LANGUAGE_CODE = "en-us"
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Kolkata"
 USE_I18N = True
 USE_TZ = True
 
-# Static files (CSS, JS, Images)
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]  # where your dev static files are
-STATIC_ROOT = BASE_DIR / "staticfiles"   # where collectstatic will put files
 
-# Media files (user uploads)
+# This is the FIX ✅
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# Additional static directories
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+# Media files (uploads)
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
+# Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
