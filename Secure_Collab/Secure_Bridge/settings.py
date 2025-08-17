@@ -1,26 +1,19 @@
 import os
 from pathlib import Path
 
-# ---------------------------------------------------------
-# Base Directory
-# ---------------------------------------------------------
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# ---------------------------------------------------------
-# Security Settings
-# ---------------------------------------------------------
-SECRET_KEY = 'your-secret-key-here'   # <-- Replace with your own
-DEBUG = False                         # Keep False in production
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'your-secret-key-here'   # Replace with your actual secret key
 
-ALLOWED_HOSTS = [
-    'Deeksha27.pythonanywhere.com',   # <-- Your PythonAnywhere domain
-    'localhost',
-    '127.0.0.1',
-]
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True   # Change to False in production
 
-# ---------------------------------------------------------
-# Installed Apps
-# ---------------------------------------------------------
+ALLOWED_HOSTS = ['*']   # For now, allow all. In production add your domain.
+
+
+# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -28,13 +21,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # your apps here
+
+    # Your apps
+    'users',
+    'workspace',
+    'workspace_files',
     'Secure_Bridge',
 ]
 
-# ---------------------------------------------------------
-# Middleware
-# ---------------------------------------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -45,15 +39,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# ---------------------------------------------------------
-# Root URL / WSGI
-# ---------------------------------------------------------
 ROOT_URLCONF = 'Secure_Collab.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [BASE_DIR / 'templates'],   # Add custom templates folder
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,9 +59,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Secure_Collab.wsgi.application'
 
-# ---------------------------------------------------------
-# Database (SQLite by default)
-# ---------------------------------------------------------
+
+# Database
+# (Change this to MySQL/Postgres if needed, default SQLite3 is fine for dev)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -78,9 +69,8 @@ DATABASES = {
     }
 }
 
-# ---------------------------------------------------------
-# Password Validation
-# ---------------------------------------------------------
+
+# Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -88,32 +78,29 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# ---------------------------------------------------------
+
 # Internationalization
-# ---------------------------------------------------------
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 USE_I18N = True
 USE_TZ = True
 
-# ---------------------------------------------------------
-# Static & Media Files
-# ---------------------------------------------------------
+
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 
-# Collectstatic destination
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# Location where collectstatic will copy files
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Extra static files
+# Extra places Django will look for static files
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    BASE_DIR / "static",
 ]
 
-# Media (if you upload files)
+# Media files (uploads)
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / 'media'
 
-# ---------------------------------------------------------
+
 # Default primary key field type
-# ---------------------------------------------------------
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
