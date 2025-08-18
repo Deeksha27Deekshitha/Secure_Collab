@@ -196,9 +196,20 @@ def invite_user(request, workspace_id):
     return render(request, 'workspace/invite_user.html', {'workspace': workspace})
 
 
-# Join Workspace
-@login_required
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404
+from django.contrib import messages
+from django.urls import reverse
+
 def join_workspace(request, workspace_id, token):
+    # First check if user is authenticated
+    if not request.user.is_authenticated:
+        messages.info(request, 'Please login to join the workspace.')
+        login_url = reverse('login')  # Using your direct login URL name
+        return redirect(f'{login_url}?next={request.path}')
+
     workspace = get_object_or_404(Workspace, id=workspace_id)
 
     # Check if the user is already a member
@@ -207,26 +218,28 @@ def join_workspace(request, workspace_id, token):
 
     # Check if an invitation exists for this user
     try:
-        invitation = WorkspaceInvitation.objects.get(workspace=workspace, token=token, email=request.user.email)
+        invitation = WorkspaceInvitation.objects.get(
+            workspace=workspace,
+            token=token,
+            email=request.user.email
+        )
     except ObjectDoesNotExist:
         invitation = None
 
-    # Allow joining if:
-    # - The workspace is public OR
-    # - The user has a valid invitation
+    # Allow joining if workspace is public or invitation exists
     if workspace.visibility == 'public' or invitation:
-        # Add user as a viewer
-        WorkspaceUser.objects.create(workspace=workspace, user=request.user, role='viewer')
+        WorkspaceUser.objects.create(
+            workspace=workspace,
+            user=request.user,
+            role='viewer'
+        )
 
-        # Delete the invitation after successful join (optional)
         if invitation:
             invitation.delete()
 
         return redirect('workspace:workspace_detail', workspace_id=workspace.id)
 
-    # If neither condition is met, raise 404
     raise Http404("You cannot join this private workspace without an invitation.")
-
 
 # Update User Role
 @login_required
@@ -548,14 +561,14 @@ def view_text_file(request, file_id):
 def view_image(request, file_id):
     # Get the file object from the database
     file_obj = get_object_or_404(File, id=file_id)
-    
+
     # Ensure the file is an image (can be further optimized with a file extension check)
     mime_type, encoding = mimetypes.guess_type(file_obj.file.name)
     if mime_type and mime_type.startswith('image'):
         return render(request, 'workspace/view_image.html', {
             'file_obj': file_obj
         })
-    
+
     # If the file is not an image, show an error
     messages.error(request, "File is not a valid image.")
     return redirect('workspace:workspace_detail', workspace_id=file_obj.workspace.id)
@@ -764,13 +777,13 @@ def delete_workspace(request, workspace_id):
 @login_required
 def add_message(request, workspace_id):
     workspace = get_object_or_404(Workspace, id=workspace_id)
-    
+
     # Check user role
     workspace_user = WorkspaceUser.objects.filter(workspace=workspace, user=request.user).first()
     if not workspace_user or workspace_user.role == 'viewer':
         messages.error(request, "You don't have permission to post messages in this workspace.")
         return redirect('workspace:workspace_detail', workspace_id=workspace_id)
-    
+
     if request.method == 'POST':
         message_text = request.POST.get('message', '').strip()
         if message_text:
@@ -782,18 +795,18 @@ def add_message(request, workspace_id):
             messages.success(request, "Message posted successfully!")
         else:
             messages.error(request, "Message cannot be empty.")
-    
+
     return redirect('workspace:workspace_detail', workspace_id=workspace_id)
 
 @login_required
 def delete_message(request, message_id):
     message = get_object_or_404(DiscussionMessage, id=message_id)
-    
+
     # Check if user is the message author or workspace owner/admin
     if request.user != message.user and request.user != message.workspace.owner:
         messages.error(request, "You don't have permission to delete this message.")
         return redirect('workspace:workspace_detail', workspace_id=message.workspace.id)
-    
+
     message.delete()
     messages.success(request, "Message deleted successfully!")
     return redirect('workspace:workspace_detail', workspace_id=message.workspace.id)
@@ -816,11 +829,11 @@ client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_S
 @login_required
 def sell_workspace(request, workspace_id):
     workspace = get_object_or_404(Workspace, id=workspace_id)
-    
+
     if request.user != workspace.owner:
         messages.error(request, "Only the workspace owner can sell this workspace.")
         return redirect('workspace:workspace_detail', workspace_id=workspace.id)
-    
+
     if request.method == 'POST':
         form = SellWorkspaceForm(request.POST, instance=workspace)
         if form.is_valid():
@@ -835,7 +848,7 @@ def sell_workspace(request, workspace_id):
             return redirect('workspace:workspace_detail', workspace_id=workspace.id)
     else:
         form = SellWorkspaceForm(instance=workspace)
-    
+
     return render(request, 'workspace/sell_workspace.html', {
         'form': form,
         'workspace': workspace
@@ -878,7 +891,7 @@ def initiate_payment(request, workspace_id):
         logger.info(f"Initiate payment request for workspace {workspace_id} from user {request.user.id}")
 
         # 1. Verify Razorpay configuration
-        if not all([hasattr(settings, 'RAZORPAY_KEY_ID'), 
+        if not all([hasattr(settings, 'RAZORPAY_KEY_ID'),
                    hasattr(settings, 'RAZORPAY_KEY_SECRET')]):
             logger.error("Razorpay credentials not configured")
             return JsonResponse({
@@ -976,7 +989,7 @@ def initiate_payment(request, workspace_id):
             'success': False,
             'error': 'An unexpected error occurred'
         }, status=500)
-    
+
 
 @csrf_exempt
 def verify_payment(request):
@@ -988,39 +1001,39 @@ def verify_payment(request):
             razorpay_signature = data.get('razorpay_signature')
             workspace_id = data.get('workspace_id')
             buyer_id = data.get('buyer_id')
-            
+
             # Verify payment signature
             params_dict = {
                 'razorpay_order_id': razorpay_order_id,
                 'razorpay_payment_id': razorpay_payment_id,
                 'razorpay_signature': razorpay_signature
             }
-            
+
             client.utility.verify_payment_signature(params_dict)
-            
+
             # Get workspace and buyer
             workspace = Workspace.objects.get(id=workspace_id)
             buyer = User.objects.get(id=buyer_id)
-            
+
             # Remove ALL existing users from workspace
             WorkspaceUser.objects.filter(workspace=workspace).delete()
-            
+
             # Transfer ownership
             workspace.owner = buyer
             workspace.is_for_sale = False
             workspace.sale_price = None
             workspace.save()
-            
+
             # Add buyer as the only member with creator role
             WorkspaceUser.objects.create(
                 workspace=workspace,
                 user=buyer,
                 role='creator'
             )
-            
+
             return JsonResponse({'success': True})
-            
+
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)}, status=400)
-    
+
     return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=405)
