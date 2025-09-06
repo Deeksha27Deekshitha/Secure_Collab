@@ -69,3 +69,7 @@ python manage.py runserver
 
 ### Access the App:
 Open your browser and go to http://127.0.0.1:8000/
+
+
+## Local Host
+https://deeksha27.pythonanywhere.com/
